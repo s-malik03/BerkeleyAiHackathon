@@ -10,7 +10,6 @@ const D3Graph = ({ graph }) => {
         const svg = d3.select(svgRef.current)
             .attr("width", 960)
             .attr("height", 600)
-            .style("border", "1px solid black");
 
         const width = +svg.attr("width");
         const height = +svg.attr("height");
@@ -24,7 +23,7 @@ const D3Graph = ({ graph }) => {
             .enter().append("line")
             .attr("stroke", "#000")  // Ensure the stroke is visible
             .attr("stroke-opacity", 0.6)
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 5)
             .on("mouseover", displayDescription)
             .on("mouseout", hideDescription);
 

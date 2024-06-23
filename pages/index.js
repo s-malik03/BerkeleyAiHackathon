@@ -539,22 +539,14 @@ class Page extends React.Component {
     return (
       <div className={classes.container}>
         <div className={classes.title}>yaph</div>
+      
         <div className={classes.panelMessages}>
-        <D3Graph graph={{
-          nodes: this.state.graph.nodes,
-          links: this.state.graph.links
-        }}></D3Graph>
-        {/* <button onClick={async () => {
-          console.log("STARTING")
-          const resp = await audioInstance(this.state.data)
-          this.setState({
-            graph: resp
-          })
-          console.log(resp)
-        }} >
-          {"Simulate Message"}
-        </button> */}
+          <D3Graph graph={{
+            nodes: this.state.graph.nodes,
+            links: this.state.graph.links
+          }}></D3Graph>
         </div>
+        
         <div className={classes.panelControl}>
           <div className={classes.panelLeft}>
           </div>
@@ -589,8 +581,8 @@ class Page extends React.Component {
               <div
                 className={classes.buttonCenter}
                 style={{
-                  borderColor: this.state.started ? "#FF0A0A" : "#228B22",
-                  backgroundColor: this.state.started ? "#FF0A0A" : "#228B22",
+                  borderColor: this.state.started ? "#FF0A0A" : "#4AD2EE",
+                  backgroundColor: this.state.started ? "#FF0A0A" : "#4AD2EE",
                 }}
               >
                 <IconButton onClick={this.handleStart} size={32}>
@@ -598,7 +590,7 @@ class Page extends React.Component {
                     <MicrophoneOff color="#555" />
                   ) : (
                     <Microphone
-                      color={this.state.started ? "#FFD167" : "#555"}
+                      color={this.state.started ? "#FFFFFF" : "#555"}
                     />
                   )}
                 </IconButton>

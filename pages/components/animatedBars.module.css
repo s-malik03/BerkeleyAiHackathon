@@ -8,7 +8,7 @@
 .bar {
     position: relative;
     border-radius: 3px;
-    background-color: #FFD167;
-    background-image: linear-gradient(#FFD167, #FFA967);
+    background-color: #67aeff;
+    background-image: linear-gradient(#67aeff, #676fff);
     width: calc((100% - 9px)/8);
 }
