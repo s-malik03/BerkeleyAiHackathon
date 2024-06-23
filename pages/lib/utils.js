@@ -1,8 +1,8 @@
-export function formatNumber(n) {
+function formatNumber(n) {
     return n < 10 ? `0${n}` : n
 }
 
-export function getDateTimeFromMS(ms) {
+function getDateTimeFromMS(ms) {
     const date = new Date(parseInt(ms))
 
     const year = date.getFullYear()
@@ -22,3 +22,5 @@ export function getDateTimeFromMS(ms) {
 
     return [[year, month, day].join('/'), [hour, minute, second].join(':')].join(' ')
 }
+
+export default getDateTimeFromMS;

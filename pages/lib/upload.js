@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import getConfig from 'next/config'
 
-export function getFilesFromUpload() {
+function getFilesFromUpload() {
 
     const { serverRuntimeConfig } = getConfig()
 
@@ -58,3 +58,5 @@ export function getFilesFromUpload() {
     
     return prevData.filter(item => item.texts.length > 0)
 }
+
+export default getFilesFromUpload;

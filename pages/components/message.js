@@ -2,7 +2,7 @@ import React from 'react'
 
 import classes from './message.module.css'
 
-import { getDateTimeFromMS } from '../lib/utils'
+import getDateTimeFromMS from '../lib/utils'
 
 function Message({ id, texts, duration, mode, disabled, onClick }) {
 

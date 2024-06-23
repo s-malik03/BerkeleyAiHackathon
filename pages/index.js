@@ -9,8 +9,8 @@ import D3Graph from "./components/d3Graph";
 
 import AnimatedBars from "./components/animatedBars";
 
-import { getFilesFromUpload } from "./lib/upload";
-import { audioInstance } from "./components/audioInstance";
+import getFilesFromUpload from "./lib/upload";
+import audioInstance from "./components/audioInstance";
 
 const sendData = async (file, options, signal) => {
   let formData = new FormData();

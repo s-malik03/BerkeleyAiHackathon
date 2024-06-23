@@ -5,7 +5,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 
-export const audioInstance = async (corpus, graph) => {
+const audioInstance = async (corpus, graph) => {
 
     function dictToString(dict) {
         if (typeof dict !== 'object' || !dict.nodes || !dict.links) {
@@ -84,3 +84,5 @@ export const audioInstance = async (corpus, graph) => {
         return graph
     }
 }
+
+export default audioInstance;
