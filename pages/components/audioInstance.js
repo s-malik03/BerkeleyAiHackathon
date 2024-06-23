@@ -4,12 +4,36 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 
-export const audioInstance = async (corpus) => {
+export const audioInstance = async (corpus, graph) => {
+
+    function dictToString(dict) {
+        if (typeof dict !== 'object' || !dict.nodes || !dict.links) {
+            throw new Error("Invalid input format");
+        }
+    
+        // Initialize result string
+        let result = "Nodes: ";
+    
+        // Process nodes
+        dict.nodes.forEach(node => {
+            result += `(Entity: ${node.entity}, Description: ${node.description}), `;
+        });
+    
+        result += "Links: ";
+    
+        // Process links
+        dict.links.forEach(link => {
+            result += `(Source: ${link.source}, Target: ${link.target}), `;
+        });   
+        return result;
+    }
+
+
 
     // chat instance
     const chat = new ChatOpenAI({
-        temperature: 0.8,
-        model: "gpt-4-turbo",
+        temperature: 0.95,
+        model: "gpt-4o",
         openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
     });
 
@@ -21,21 +45,40 @@ export const audioInstance = async (corpus) => {
         })),
         links: z.array(z.object({
             source : z.string(),
-            target : z.string()
+            target : z.string(),
+            description: z.string()
         }))
     });
     const mapParser = StructuredOutputParser.fromZodSchema(mapSchema);
 
     // chain purpose: convert the text into nodes/sources and create a hashmap
     const chain_one = ChatPromptTemplate.fromTemplate(
-        "{system_prompt}. \n {format_instructions} \n text : {text_to_parse}"
+        '{system_prompt}. {format_instructions} \n context : {graph_context}  \n text : {text_to_parse}'
     ).pipe(chat).pipe(mapParser);
 
+    console.log("corpus: " + corpus)
+
+    const sys_prmpt = `I need you to analyze the following text and generate a list of connections 
+    between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be connected if there is a relevant relationship or 
+    connection between them. Make sure each node has a VALID entity, and not just a random word. 
+    
+    Only if asked, always generate ideas and create nodes for them.`
+
     const response = await chain_one.invoke({
-        system_prompt: "I need you to analyze the following text and generate a list of connections between nodes that represent ideas. Each node should represent a distinct idea or concept mentioned in the text. Nodes should be connected if there is a relevant relationship or connection between them.",
+        system_prompt: sys_prmpt ,
         format_instructions: mapParser.getFormatInstructions(),
-        text_to_parse: corpus
+        text_to_parse: corpus,
+        graph_context: dictToString(graph)
     })
+
+    // check if all links are valid nodes
+    const nodes = response.nodes.map(node => node.entity);
+    const links = response.links.map(link => [link.source, link.target]).flat();
+    const invalidLinks = links.filter(link => !nodes.includes(link));
+    if (invalidLinks.length > 0) {
+        // remove from links
+        response.links = response.links.filter(link => !invalidLinks.includes(link.source) && !invalidLinks.includes(link.target));
+    }
 
     return response;
 }

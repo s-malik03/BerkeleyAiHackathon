@@ -109,20 +109,29 @@ class Page extends React.Component {
 
   }
 
-  textCompilation() {
-    let text = ""
+  textCompilation(n) {
+    const allTexts = [];
+
+    // Collect all text pieces into a single array
     this.state.data.forEach((item) => {
-      text += item.texts.join(" ") + " "
-    })
-    return text
-  }
+        allTexts.push(item.texts.join(" "));
+    });
+
+    console.log(allTexts)
+
+    // Get the last n text pieces
+    if (allTexts.length <= n) {
+      console.log(allTexts.join(" "))
+      return allTexts.join(" ");  
+    } else {
+      return allTexts.slice(-n).join("");
+    }
+}
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.data !== this.state.data) {
       console.log("START")
-      let text = this.textCompilation()
-      console.log(text)
-      const resp = await audioInstance(text)
+      const resp = await audioInstance(this.textCompilation(3), this.state.graph)
       console.log("RESP: ", resp)
       this.setState({
         graph: resp

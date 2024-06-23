@@ -25,7 +25,10 @@ const D3Graph = ({ graph }) => {
             .enter().append("line")
             .attr("stroke", "#000")  // Ensure the stroke is visible
             .attr("stroke-opacity", 0.6)
-            .attr("stroke-width", 1.5);
+            .attr("stroke-width", 1.5)
+            .on("mouseover", displayDescription)
+            .on("mouseout", hideDescription);
+            
 
         const node = svg.append("g")
             .attr("class", "nodes")
@@ -98,7 +101,8 @@ const D3Graph = ({ graph }) => {
             descriptionBox.style.color = "black";
             descriptionBox.style.left = (event.pageX + 15) + "px";
             descriptionBox.style.top = (event.pageY + 15) + "px";
-            descriptionBox.innerHTML = `<strong>${d?.entity} </strong><br>${d?.description}`;
+            descriptionBox.innerHTML = `<strong>${ d?.entity ? d.entity : ""} 
+                                        </strong><br>${d?.description}`;
         }
 
         function hideDescription() {
