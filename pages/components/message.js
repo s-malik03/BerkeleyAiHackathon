@@ -2,42 +2,7 @@ import React from 'react'
 
 import classes from './message.module.css'
 
-import Arrow from './arrow'
-
-import IconButton from './iconbutton'
-
-import Progress from './progress'
-
 import { getDateTimeFromMS } from '../lib/utils'
-
-function removeHour(str) {
-    let token = str.split(":")
-    return token.length > 2 ? [token[1], token[2]].join(":") : [token[0], token[1]].join(":")
-}
-
-function formatText(text) {
-    
-    const token = text.split("] ")
-
-    let tmp_time = token[0].replaceAll(',', '.')
-    tmp_time = tmp_time.slice(1)
-
-    let stoken = tmp_time.split(" --> ")
-    let time1 = stoken[0].trim()
-    let time2 = stoken[1].trim()
-
-    time1 = removeHour(time1)
-    time2 = removeHour(time2)
-
-    const text_time = `[${time1} --> ${time2}]`
-    const text_text = token.length > 1 ? token[1] : ''
-
-    return {
-        duration: text_time,
-        text: text_text,
-    }
-
-}
 
 function Message({ id, texts, duration, mode, disabled, onClick }) {
 
@@ -80,13 +45,10 @@ function Message({ id, texts, duration, mode, disabled, onClick }) {
             <div className={classes.datetime}>{ display_date }</div>
             <div className={classes.inner}>
                 <div className={classes.text}>
-                { texts.map((rawtext, index) => {
-
-                    const { duration,  text } = formatText(rawtext)
-
+                { texts.map((text) => {
                     return (
-                        <p key={index} className={classes.item}>
-                            <span className={classes.textTime}>{ duration }</span>
+                        <p className={classes.item}>
+                            {/* <span className={classes.textTime}>{ duration }</span> */}
                             <span className={classes.textText}>{ text }</span>
                         </p>
                     )

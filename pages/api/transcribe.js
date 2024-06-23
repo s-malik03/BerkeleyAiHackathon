@@ -1,7 +1,9 @@
+import fs from 'fs'
 import nextConnect from 'next-connect'
 import multer from 'multer'
-import { exec } from 'child_process'
-import getConfig from 'next/config'
+import OpenAI from "openai";
+
+const openai = new OpenAI();
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -23,20 +25,14 @@ const uploadMiddleware = upload.single('file')
 
 apiRoute.use(uploadMiddleware)
 
-const { serverRuntimeConfig } = getConfig()
-
-apiRoute.post((req, res) => {
+apiRoute.post(async (req, res) => {
     const filename = req.file.path
-    const outputDir = serverRuntimeConfig.PROJECT_ROOT + '/public/uploads'
-
-    let sCommand = `whisper ./${filename} --model tiny --language English --task transcribe --output_dir ${outputDir}`
-    exec(sCommand, (err, stdout, stderr) => {
-        if (err) {
-            res.send({ status: 300, error: err, out: null, file: null })
-        } else {
-            res.send({ status: 200, error: stderr, out: stdout, file: req.file })
-        }
-    })
+    const transcription = await openai.audio.transcriptions.create({
+        file: fs.createReadStream(filename),
+        model: "whisper-1",
+        response_format: "text",
+      });
+    res.send({ status: 200, error: null, out: transcription, file: req.file })
 
 })
 

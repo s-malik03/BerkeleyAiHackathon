@@ -40,8 +40,8 @@ const sendData = async (file, options, signal) => {
 const formatData = (data) => {
   return data
     .split("\n")
-    .filter((item) => item.length > 0)
-    .filter((item) => item.indexOf("[") === 0);
+    // .filter((item) => item.length > 0)
+    // .filter((item) => item.indexOf("[") === 0);
 };
 
 export async function getServerSideProps(context) {
@@ -120,6 +120,7 @@ class Page extends React.Component {
       if (this.abortController) {
         this.abortController.abort();
       }
+
     } catch (err) {
       console.log(err);
     }
@@ -143,6 +144,7 @@ class Page extends React.Component {
             ? parseInt(options.maxPause)
             : this.MAX_PAUSE,
         });
+
       }
       const story = [
         "Once upon a time in a small village nestled in the hills, there lived a young girl named Ella.",
@@ -420,9 +422,9 @@ class Page extends React.Component {
   handleStop() {
     const blob = new Blob(this.chunks, { type: "audio/webm;codecs=opus" });
     this.chunks = [];
-
+    
     var file = new File([blob], `file${Date.now()}.m4a`);
-
+    
     this.sendAudioData(file);
   }
 
