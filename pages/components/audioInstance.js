@@ -4,14 +4,13 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 
-export const audioInstance = async (textPieces) => {
-    const corpus = textPieces.join(" ");
+export const audioInstance = async (corpus) => {
 
     // chat instance
     const chat = new ChatOpenAI({
         temperature: 0.8,
         model: "gpt-3.5-turbo",
-        openAIApiKey: process.env.OPENAI_API_KEY
+        openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
     });
 
     // create a map parser based on output requirements
