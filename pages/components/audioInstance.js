@@ -9,7 +9,7 @@ export const audioInstance = async (corpus) => {
     // chat instance
     const chat = new ChatOpenAI({
         temperature: 0.8,
-        model: "gpt-4-turbo",
+        model: "gpt-4o",
         openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
     });
 
