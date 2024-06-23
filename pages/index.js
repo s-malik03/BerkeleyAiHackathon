@@ -6,7 +6,6 @@ import IconButton from "./components/iconbutton";
 import Microphone from "./components/microphone";
 import MicrophoneOff from "./components/microphoneOff";
 import D3Graph from "./components/d3Graph";
-import DefaultScreen from "./components/defaultScreen";
 
 import AnimatedBars from "./components/animatedBars";
 
