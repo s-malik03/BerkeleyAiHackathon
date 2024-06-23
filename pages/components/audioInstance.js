@@ -12,7 +12,7 @@ export const audioInstance = async (newText) => {
     const chat = new ChatOpenAI({
         temperature: 0.8,
         model: "gpt-3.5-turbo",
-        openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
+        openAIApiKey: process.env.OPENAI_API_KEY
     });
 
     // create a map parser based on output requirements
