@@ -6,12 +6,27 @@ import IconButton from "./components/iconbutton";
 import Microphone from "./components/microphone";
 import MicrophoneOff from "./components/microphoneOff";
 import Settings from "./components/settings";
+import D3Graph from "./components/d3Graph";
 
 // import Dialog from './components/dialog'
 
 import AnimatedBars from "./components/animatedBars";
 
 import { getFilesFromUpload } from "./lib/upload";
+
+const testGraph = {
+  nodes: [
+    { entity: "Quantum Entanglement", description: "Imagine two particles connected regardless of distance, challenging classical notions of locality." },
+    { entity: "Superposition", description: "Particles exist in multiple states until observed, analogous to Schrödinger's cat." },
+    { entity: "Uncertainty Principle", description: "Fundamental limit on knowing certain properties of particles, like position and momentum." },
+    { entity: "Quantum Computing", description: "Utilizes entanglement to enhance computational power beyond classical limits." }
+  ],
+  links: [
+    { source: "Quantum Entanglement", target: "Superposition" },
+    { source: "Superposition", target: "Uncertainty Principle" },
+    { source: "Uncertainty Principle", target: "Quantum Computing" }
+  ]
+};
 
 const sendData = async (file, options, signal) => {
   let formData = new FormData();
@@ -503,6 +518,7 @@ class Page extends React.Component {
     return (
       <div className={classes.container}>
         <div className={classes.panelMessages}>
+        <D3Graph graph={testGraph}></D3Graph>
         </div>
         <div className={classes.panelControl}>
           <div className={classes.panelLeft}>
