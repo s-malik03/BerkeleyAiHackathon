@@ -5,10 +5,7 @@ import Progress from "./components/progress";
 import IconButton from "./components/iconbutton";
 import Microphone from "./components/microphone";
 import MicrophoneOff from "./components/microphoneOff";
-import Settings from "./components/settings";
 import D3Graph from "./components/d3Graph";
-
-// import Dialog from './components/dialog'
 
 import AnimatedBars from "./components/animatedBars";
 
