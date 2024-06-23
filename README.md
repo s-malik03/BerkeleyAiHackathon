@@ -1,1 +1,3 @@
-# Berkeley AI Hackathon
+# yaph
+
+Your TL;DR tool for visual insights
