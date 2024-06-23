@@ -50,6 +50,7 @@ class Page extends React.Component {
     super(props);
 
     this.audioRef = React.createRef();
+    this.scrollableBoxRef = React.createRef(); // Add ref for the scrollable box
 
     this.state = {
       data: this.props.prev || [],
@@ -76,8 +77,8 @@ class Page extends React.Component {
       task: "translate",
 
       playDuration: 0,
-      minDecibels: -55,
-      maxPause: 300,
+      minDecibels: -47,
+      maxPause: 200,
     };
 
     this.mediaRec = null;
@@ -467,7 +468,7 @@ class Page extends React.Component {
         <div className={classes.panelControl}>
           <div className={classes.panelLeft}></div>
           <div className={classes.panelCenter}>
-            <div className={classes.scrollableBox}>
+            <div className={classes.scrollableBox} ref={this.scrollableBoxRef}>
               {display_data.map((item) => {
                 return (
                   <Message
