@@ -1,5 +1,5 @@
 {
-  "name": "openai-whisper",
+  "name": "yaph",
   "version": "1.0.0",
   "description": "",
   "main": "pages/index.js",

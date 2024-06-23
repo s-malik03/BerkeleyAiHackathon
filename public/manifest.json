@@ -1,6 +1,6 @@
 {
-  "short_name": "Whisper",
-  "name": "OpenAI Whisper: Speech Transcriber & Translator",
+  "short_name": "Yaph",
+  "name": "Yaph",
   "icons": [
     {
       "src": "favicon.ico",
