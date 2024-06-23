@@ -8,7 +8,7 @@ function getFilesFromUpload() {
 
     const uploadDir = 'uploads'
 
-    const dir = path.join(serverRuntimeConfig.PROJECT_ROOT, path.resolve("public"), uploadDir)
+    const dir = path.join(process.cwd(), "public", uploadDir)
 
     let files = fs.readdirSync(dir).filter(item => item.indexOf(".DS_Store") < 0)
 
