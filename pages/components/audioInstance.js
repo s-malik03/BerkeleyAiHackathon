@@ -66,7 +66,7 @@ const audioInstance = async (corpus, graph) => {
     const sys_prmpt = `You are a lecturer on the topic in the text. I need you to analyze the following text and generate a list of connections 
     between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be 
     connected if there is a relevant relationship or connection between them. Try your best to not 
-    change old nodes UNLESS they are now irrelevant and only add new nodes RELATED to the larger theme of the text and context.
+    change or remove old nodes UNLESS they are now irrelevant to the overarching theme and only add new nodes RELATED to the larger theme of the text and context.
     Keep more focus on better link and node descriptions than quantity of ideas.`
 
     try {
