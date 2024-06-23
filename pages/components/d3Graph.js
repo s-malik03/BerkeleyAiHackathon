@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 
 const D3Graph = ({ graph }) => {
     const svgRef = useRef();
+    const oldGraph = { nodes: [], links: [] };
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)

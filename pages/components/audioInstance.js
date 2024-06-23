@@ -32,7 +32,7 @@ export const audioInstance = async (corpus, graph) => {
 
     // chat instance
     const chat = new ChatOpenAI({
-        temperature: 0.95,
+        temperature: 0.9,
         model: "gpt-4o",
         openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
     });
@@ -58,32 +58,28 @@ export const audioInstance = async (corpus, graph) => {
 
     console.log("corpus: " + corpus)
 
-    if (corpus === "") {
-        return graph;
-    }
-
     const sys_prmpt = `I need you to analyze the following text and generate a list of connections 
     between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be connected if there is a relevant relationship or 
-    connection between them. Make sure each node has a VALID entity, and not just a random word. 
-    
-    Only if asked, generate ideas and create nodes for them. Try your best to retain nodes and links that already exist in the graph. And add nodes/links sparingly 
-    and ensure the links are relevant. Recreate old links.`
+    connection between them. Please re-use old nodes! Only if asked, generate ideas.`
 
-    const response = await chain_one.invoke({
-        system_prompt: sys_prmpt ,
-        format_instructions: mapParser.getFormatInstructions(),
-        text_to_parse: corpus,
-        graph_context: dictToString(graph)
-    })
+    try {
+        const response = await chain_one.invoke({
+            system_prompt: sys_prmpt ,
+            format_instructions: mapParser.getFormatInstructions(),
+            text_to_parse: corpus,
+            graph_context: dictToString(graph)
+        })
+        // check if all links are valid nodes
+        const nodes = response.nodes.map(node => node.entity);
+        const links = response.links.map(link => [link.source, link.target]).flat();
+        const invalidLinks = links.filter(link => !nodes.includes(link));
+        if (invalidLinks.length > 0) {
+            // remove from links
+            response.links = response.links.filter(link => !invalidLinks.includes(link.source) && !invalidLinks.includes(link.target));
+        }
 
-    // check if all links are valid nodes
-    const nodes = response.nodes.map(node => node.entity);
-    const links = response.links.map(link => [link.source, link.target]).flat();
-    const invalidLinks = links.filter(link => !nodes.includes(link));
-    if (invalidLinks.length > 0) {
-        // remove from links
-        response.links = response.links.filter(link => !invalidLinks.includes(link.source) && !invalidLinks.includes(link.target));
+        return response;
+    } catch (error) {
+        return graph
     }
-
-    return response;
 }

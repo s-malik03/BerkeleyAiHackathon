@@ -117,8 +117,22 @@ class Page extends React.Component {
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.data !== this.state.data) {
-      const resp = await audioInstance(this.textCompilation(3), this.state.graph);
-      this.setState({ graph: resp });
+      const last_resp = this.textCompilation(1)
+      const corpus = this.textCompilation(15)
+
+      if (last_resp.split(" ").length <= 3 || corpus.split(" ").length <= 3) {
+        console.log("Error: not updating");
+        return;
+      }
+      const resp = await audioInstance(corpus, this.state.graph);
+      if (resp?.error === -1) {
+        console.log("Error: not updating");
+        return;
+      } else {
+        console.log("Success: updating");
+        this.setState({ graph: resp });
+      }
+
     }
   }
 
