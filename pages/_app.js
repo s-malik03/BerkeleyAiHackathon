@@ -1,6 +1,6 @@
 import App from 'next/app';
-import Head from 'next/head';
 import '../styles/app.css';
+import { useState } from 'react';
 
 export default function MyApp({ Component, pageProps }) {
     
@@ -10,13 +10,12 @@ export default function MyApp({ Component, pageProps }) {
     }
 
     return (
-        <>
-        <Head>
-            <title>{ siteTitle }</title>
-            <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0, width=device-width, user-scalable=0" />
-        </Head>
-        <Component { ...props } />
-        </>
+        <div>
+            <div className=' ' >
+
+            </div>
+            <Component { ...props } />
+        </div>
     )
 }
 

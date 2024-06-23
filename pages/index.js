@@ -99,6 +99,10 @@ class Page extends React.Component {
     this.handleData = this.handleData.bind(this);
     this.handleStop = this.handleStop.bind(this);
 
+    // audioInstance state variables
+    this.oldText = "";
+    this.newText = "";
+
   }
 
   componentWillUnmount() {
