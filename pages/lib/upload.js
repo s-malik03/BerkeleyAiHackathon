@@ -8,7 +8,7 @@ function getFilesFromUpload() {
 
     const uploadDir = 'uploads'
 
-    const dir = path.join(serverRuntimeConfig.PROJECT_ROOT, './public', uploadDir)
+    const dir = '/tmp'
 
     let files = fs.readdirSync(dir).filter(item => item.indexOf(".DS_Store") < 0)
 
@@ -17,7 +17,7 @@ function getFilesFromUpload() {
     let prevData = srtfiles.map(item => {
 
         let id = item
-        let url = `/uploads/${item}`
+        let url = `/tmp/${item}`
         
         let txt = fs.readFileSync(`${dir}/${item}.srt`, {encoding: 'utf8', flag: 'r'})
 
