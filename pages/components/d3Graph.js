@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useRef, useEffect } from 'react';
@@ -21,20 +20,19 @@ const D3Graph = ({ graph }) => {
         const link = svg.append("g")
             .attr("class", "links")
             .selectAll("line")
-            .data(graph.links)
+            .data(graph.links, d => `${d.source}-${d.target}`) // Use unique key to bind data
             .enter().append("line")
             .attr("stroke", "#000")  // Ensure the stroke is visible
             .attr("stroke-opacity", 0.6)
             .attr("stroke-width", 1.5)
             .on("mouseover", displayDescription)
             .on("mouseout", hideDescription);
-            
 
         const node = svg.append("g")
             .attr("class", "nodes")
             .attr("color", "#fff")
             .selectAll("circle")
-            .data(graph.nodes)
+            .data(graph.nodes, d => d.entity) // Use unique key to bind data
             .enter().append("circle")
             .attr("r", 10)
             .attr("fill", "#000")
@@ -48,7 +46,7 @@ const D3Graph = ({ graph }) => {
         const label = svg.append("g")
             .attr("class", "labels")
             .selectAll("text")
-            .data(graph.nodes)
+            .data(graph.nodes, d => d.entity) // Use unique key to bind data
             .enter().append("text")
             .attr("class", "label")
             .attr("dx", 12)
@@ -56,10 +54,12 @@ const D3Graph = ({ graph }) => {
             .text(d => d.entity);
 
         const simulation = d3.forceSimulation(graph.nodes)
-            .force("link", d3.forceLink(graph.links).id(d => d.entity).distance(100))
-            .force("charge", d3.forceManyBody().strength(-500))
+            .force("link", d3.forceLink(graph.links).id(d => d.entity).distance(200))
+            .force("charge", d3.forceManyBody().strength(-200))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("collision", d3.forceCollide().radius(50))
+            .velocityDecay(0.6)
+            .alphaDecay(0.03)
             .on("tick", ticked);
 
         function ticked() {
@@ -70,8 +70,8 @@ const D3Graph = ({ graph }) => {
                 .attr("y2", d => d.target.y);
 
             node
-                .attr("cx", d => d.x = Math.max(10, Math.min(width - 10, d.x)))
-                .attr("cy", d => d.y = Math.max(10, Math.min(height - 10, d.y)));
+                .attr("cx", d => d.x = Math.max(20, Math.min(width - 20, d.x)))
+                .attr("cy", d => d.y = Math.max(20, Math.min(height - 20, d.y)));
 
             label
                 .attr("x", d => d.x + 15)
@@ -131,4 +131,8 @@ const D3Graph = ({ graph }) => {
     );
 };
 
-export default D3Graph;
+const areEqual = (prevProps, nextProps) => {
+    return prevProps.graph.nodes === nextProps.graph.nodes && prevProps.graph.links === nextProps.graph.links;
+};
+
+export default React.memo(D3Graph, areEqual);

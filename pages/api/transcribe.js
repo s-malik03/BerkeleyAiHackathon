@@ -31,12 +31,13 @@ apiRoute.post(async (req, res) => {
         file: fs.createReadStream(filename),
         model: "whisper-1",
         response_format: "text",
+        language: "en"
       });
     res.send({ status: 200, error: null, out: transcription, file: req.file })
 
 })
 
-export default apiRoute
+export default apiRoute;
 
 export const config = {
     api: {

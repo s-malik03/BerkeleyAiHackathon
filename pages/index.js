@@ -84,7 +84,7 @@ class Page extends React.Component {
 
       playDuration: 0,
       minDecibels: -45,
-      maxPause: 2500,
+      maxPause: 1000,
     };
 
     this.mediaRec = null;
