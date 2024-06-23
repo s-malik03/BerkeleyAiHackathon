@@ -92,28 +92,6 @@ function Message({ id, texts, duration, mode, disabled, onClick }) {
                     )
                 }) }
                 </div>
-                <div className={classes.action}>
-                    <div className={classes.actionBottom}>
-                        <Progress
-                        value={count}
-                        displayOff={true}
-                        displayOther={true}
-                        displayValue={display_value}
-                        size={32}
-                        lineWidth={2}
-                        lineColor="#999"
-                        backgroundColor="#444"
-                        />
-                    </div>
-                    <div className={classes.actionTop}>
-                        {
-                            mode === 0 &&
-                            <IconButton size={20} disabled={disabled} onClick={() => onClick(id)}>
-                                <Arrow color="#999" />
-                            </IconButton>
-                        }
-                    </div>
-                </div>
             </div>
         </div>
     )
