@@ -24,9 +24,11 @@
 .panelMessages {
     background: white !important;
     position: relative;
-    width: 100vw;
+    width: 100%;
     height: calc(100% - 200px);
     display: flex;
+    margin: 30px;
+    padding: 20px;
     justify-content: center;
     align-items: center;
 }

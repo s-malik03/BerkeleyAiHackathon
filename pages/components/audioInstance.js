@@ -63,10 +63,10 @@ const audioInstance = async (corpus, graph) => {
 
     console.log("corpus: " + corpus)
 
-    const sys_prmpt = `I need you to analyze the following text and generate a list of connections 
+    const sys_prmpt = `You are a lecturer on the topic in the text. I need you to analyze the following text and generate a list of connections 
     between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be 
     connected if there is a relevant relationship or connection between them. Try your best to not 
-    change old nodes and only add new nodes.`
+    change old nodes and only add new nodes RELATED to the larger theme of the text and context.`
 
     try {
         const response = await chain_one.invoke({
