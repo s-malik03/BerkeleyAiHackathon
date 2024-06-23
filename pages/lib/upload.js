@@ -2,13 +2,13 @@ import fs from 'fs'
 import path from 'path'
 import getConfig from 'next/config'
 
-function getFilesFromUpload() {
+export function getFilesFromUpload() {
 
     const { serverRuntimeConfig } = getConfig()
 
     const uploadDir = 'uploads'
 
-    const dir = path.join(serverRuntimeConfig.PROJECT_ROOT, './public', uploadDir)
+    const dir = path.join(serverRuntimeConfig.PROJECT_ROOT, path.resolve("public"), uploadDir)
 
     let files = fs.readdirSync(dir).filter(item => item.indexOf(".DS_Store") < 0)
 
@@ -58,5 +58,3 @@ function getFilesFromUpload() {
     
     return prevData.filter(item => item.texts.length > 0)
 }
-
-export default getFilesFromUpload;
