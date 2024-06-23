@@ -29,6 +29,7 @@ const D3Graph = ({ graph }) => {
 
         const node = svg.append("g")
             .attr("class", "nodes")
+            .attr("color", "#fff")
             .selectAll("circle")
             .data(graph.nodes)
             .enter().append("circle")
@@ -94,9 +95,10 @@ const D3Graph = ({ graph }) => {
         function displayDescription(event, d) {
             const descriptionBox = document.getElementById("description-box");
             descriptionBox.style.display = "block";
+            descriptionBox.style.color = "black";
             descriptionBox.style.left = (event.pageX + 15) + "px";
             descriptionBox.style.top = (event.pageY + 15) + "px";
-            descriptionBox.innerHTML = `<strong>${d.entity}</strong><br>${d.description}`;
+            descriptionBox.innerHTML = `<strong>${d?.entity} </strong><br>${d?.description}`;
         }
 
         function hideDescription() {
