@@ -63,7 +63,7 @@ export const audioInstance = async (corpus, graph) => {
     connection between them. Make sure each node has a VALID entity, and not just a random word. 
     
     Only if asked, generate ideas and create nodes for them. Try your best to retain nodes and links that already exist in the graph. And add nodes/links sparingly 
-    and ensure the links are relevant. Recreate old linkss`
+    and ensure the links are relevant. Recreate old links.`
 
     const response = await chain_one.invoke({
         system_prompt: sys_prmpt ,

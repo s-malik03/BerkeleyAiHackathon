@@ -6,6 +6,7 @@ import IconButton from "./components/iconbutton";
 import Microphone from "./components/microphone";
 import MicrophoneOff from "./components/microphoneOff";
 import D3Graph from "./components/d3Graph";
+
 import AnimatedBars from "./components/animatedBars";
 
 import { getFilesFromUpload } from "./lib/upload";
@@ -131,7 +132,7 @@ class Page extends React.Component {
 
   componentDidMount() {
     try {
-      let rawdata = localStorage.getItem("openai-whisper-settings");
+      let rawdata = localStorage.getItem("yaph-settings");
       if (rawdata) {
         const options = JSON.parse(rawdata);
 
@@ -209,7 +210,7 @@ class Page extends React.Component {
       options.task = task;
     }
 
-    localStorage.setItem("openai-whisper-settings", JSON.stringify(options));
+    localStorage.setItem("yaph-settings", JSON.stringify(options));
   }
 
   handleError(error) {
@@ -436,6 +437,7 @@ class Page extends React.Component {
 
     return (
       <div className={classes.container}>
+        <div className={classes.title}>yaph</div>
         <div className={classes.panelMessages}>
           <D3Graph graph={{ nodes: this.state.graph.nodes, links: this.state.graph.links }}></D3Graph>
         </div>
