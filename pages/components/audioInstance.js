@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { React, useState, useEffect } from 'react';
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
@@ -34,7 +35,7 @@ export const audioInstance = async (corpus, graph) => {
     const chat = new ChatOpenAI({
         temperature: 0.9,
         model: "gpt-4o",
-        openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
+        openAIApiKey: process.env.OPENAI_API_KEY
     });
 
     // create a map parser based on output requirements
