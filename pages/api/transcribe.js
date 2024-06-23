@@ -28,8 +28,8 @@ const { serverRuntimeConfig } = getConfig()
 apiRoute.post((req, res) => {
     const filename = req.file.path
     const outputDir = serverRuntimeConfig.PROJECT_ROOT + '/public/uploads'
-    
-    let sCommand = `fish -c 'whisper ./${filename} --model tiny --language English --task transcribe --output_dir ${outputDir}'`
+
+    let sCommand = `whisper ./${filename} --model tiny --language English --task transcribe --output_dir ${outputDir}`
     exec(sCommand, (err, stdout, stderr) => {
         if (err) {
             res.send({ status: 300, error: err, out: null, file: null })

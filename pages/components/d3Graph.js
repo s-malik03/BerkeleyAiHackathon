@@ -49,10 +49,10 @@ const D3Graph = ({ graph }) => {
             .attr("class", "label")
             .attr("dx", 12)
             .attr("dy", ".35em")
-            .text(d => d.id);
+            .text(d => d.entity);
 
         const simulation = d3.forceSimulation(graph.nodes)
-            .force("link", d3.forceLink(graph.links).id(d => d.id).distance(100))
+            .force("link", d3.forceLink(graph.links).id(d => d.entity).distance(100))
             .force("charge", d3.forceManyBody().strength(-500))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("collision", d3.forceCollide().radius(50))
@@ -96,7 +96,7 @@ const D3Graph = ({ graph }) => {
             descriptionBox.style.display = "block";
             descriptionBox.style.left = (event.pageX + 15) + "px";
             descriptionBox.style.top = (event.pageY + 15) + "px";
-            descriptionBox.innerHTML = `<strong>${d.id}</strong><br>${d.description}`;
+            descriptionBox.innerHTML = `<strong>${d.entity}</strong><br>${d.description}`;
         }
 
         function hideDescription() {
