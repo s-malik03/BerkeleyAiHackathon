@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import getConfig from 'next/config'
 
-export function getFilesFromUpload() {
+function getFilesFromUpload() {
 
     const { serverRuntimeConfig } = getConfig()
 
