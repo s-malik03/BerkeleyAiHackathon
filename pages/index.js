@@ -136,6 +136,8 @@ class Page extends React.Component {
         this.setState({ graph: resp });
       }
 
+      // Scroll to bottom after updating state with new data
+      this.scrollToBottom();
     }
   }
 
@@ -442,6 +444,12 @@ class Page extends React.Component {
       this.setState({ recording: false, countDown: false, count: 0, progress: 0, started: false });
     } else {
       this.setState({ progress: 0, started: true });
+    }
+  }
+
+  scrollToBottom() {
+    if (this.scrollableBoxRef.current) {
+      this.scrollableBoxRef.current.scrollTop = this.scrollableBoxRef.current.scrollHeight;
     }
   }
 
