@@ -58,6 +58,10 @@ export const audioInstance = async (corpus, graph) => {
 
     console.log("corpus: " + corpus)
 
+    if (corpus === "") {
+        return graph;
+    }
+
     const sys_prmpt = `I need you to analyze the following text and generate a list of connections 
     between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be connected if there is a relevant relationship or 
     connection between them. Make sure each node has a VALID entity, and not just a random word. 

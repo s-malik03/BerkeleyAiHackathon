@@ -3,8 +3,6 @@ import '../styles/app.css';
 import { useState } from 'react';
 
 export default function MyApp({ Component, pageProps }) {
-    
-    const siteTitle = process.env.siteTitle
     const props = {
         ...pageProps
     }
