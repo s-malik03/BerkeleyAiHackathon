@@ -54,9 +54,9 @@ const D3Graph = ({ graph }) => {
 
         const simulation = d3.forceSimulation(graph.nodes)
             .force("link", d3.forceLink(graph.links).id(d => d.entity).distance(200))
-            .force("charge", d3.forceManyBody().strength(-200))
+            .force("charge", d3.forceManyBody().strength(-100))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collision", d3.forceCollide().radius(50))
+            .force("collision", d3.forceCollide().radius(100))
             .velocityDecay(0.6)
             .alphaDecay(0.03)
             .on("tick", ticked);
