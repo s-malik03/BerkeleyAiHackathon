@@ -7,6 +7,7 @@
 .yarn/install-state.gz
 yarn.lock
 public/uploads/*
+!public/uploads/temp.txt
 
 # testing
 /coverage
