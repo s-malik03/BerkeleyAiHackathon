@@ -77,8 +77,8 @@ class Page extends React.Component {
       task: "translate",
 
       playDuration: 0,
-      minDecibels: -47,
-      maxPause: 200,
+      minDecibels: -50,
+      maxPause: 500,
     };
 
     this.mediaRec = null;
@@ -119,7 +119,7 @@ class Page extends React.Component {
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.data !== this.state.data) {
       const last_resp = this.textCompilation(1)
-      const corpus = this.textCompilation(15)
+      const corpus = this.textCompilation(20)
 
       if (last_resp.split(" ").length <= 3 || corpus.split(" ").length <= 3) {
         console.log("Error: not updating");
