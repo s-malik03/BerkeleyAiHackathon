@@ -11,6 +11,7 @@ import AnimatedBars from "./components/animatedBars";
 
 import getFilesFromUpload from "./lib/upload";
 import audioInstance from "./components/audioInstance";
+require('dotenv').config();
 
 const sendData = async (file, options, signal) => {
   let formData = new FormData();
@@ -126,11 +127,12 @@ class Page extends React.Component {
         return;
       }
       const resp = await audioInstance(corpus, this.state.graph);
+
       if (resp?.error === -1) {
         console.log("Error: not updating");
         return;
       } else {
-        console.log("Success: updating");
+        console.log("Success: updating"); 
         this.setState({ graph: resp });
       }
 

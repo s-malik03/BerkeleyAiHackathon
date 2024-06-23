@@ -4,6 +4,10 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
+require('dotenv').config({
+    debug: true
+});
+
 
 const audioInstance = async (corpus, graph) => {
 
@@ -29,13 +33,13 @@ const audioInstance = async (corpus, graph) => {
         return result;
     }
 
-
+    // console.log("env: " + process.env.NEXT_PUBLIC_OPENAI_API_KEY)
 
     // chat instance
     const chat = new ChatOpenAI({
         temperature: 0.9,
         model: "gpt-4o",
-        openAIApiKey: process.env.OPENAI_API_KEY
+        openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY + ""
     });
 
     // create a map parser based on output requirements
@@ -60,8 +64,9 @@ const audioInstance = async (corpus, graph) => {
     console.log("corpus: " + corpus)
 
     const sys_prmpt = `I need you to analyze the following text and generate a list of connections 
-    between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be connected if there is a relevant relationship or 
-    connection between them. Please re-use old nodes! Only if asked, generate ideas.`
+    between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be 
+    connected if there is a relevant relationship or connection between them. Try your best to not 
+    change old nodes and only add new nodes.`
 
     try {
         const response = await chain_one.invoke({
