@@ -4,9 +4,8 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 
-export const audioInstance = async (oldText, newText) => {
-    // this.totalText = '';
-    // this.curMap = [];
+export const audioInstance = async (textPieces) => {
+    const corpus = textPieces.join(" ");
 
     // chat instance
     const chat = new ChatOpenAI({
@@ -36,8 +35,8 @@ export const audioInstance = async (oldText, newText) => {
     const response = await chain_one.invoke({
         system_prompt: "system_prompt",
         format_instructions: mapParser.getFormatInstructions(),
-        text_to_parse: newText
+        text_to_parse: corpus
     })
 
-    return response, oldText + "\n" + newText;
+    return response;
 }

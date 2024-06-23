@@ -13,20 +13,8 @@ import D3Graph from "./components/d3Graph";
 import AnimatedBars from "./components/animatedBars";
 
 import { getFilesFromUpload } from "./lib/upload";
+import { audioInstance } from "./components/audioInstance";
 
-const testGraph = {
-  nodes: [
-    { entity: "Quantum Entanglement", description: "Imagine two particles connected regardless of distance, challenging classical notions of locality." },
-    { entity: "Superposition", description: "Particles exist in multiple states until observed, analogous to Schrödinger's cat." },
-    { entity: "Uncertainty Principle", description: "Fundamental limit on knowing certain properties of particles, like position and momentum." },
-    { entity: "Quantum Computing", description: "Utilizes entanglement to enhance computational power beyond classical limits." }
-  ],
-  links: [
-    { source: "Quantum Entanglement", target: "Superposition" },
-    { source: "Superposition", target: "Uncertainty Principle" },
-    { source: "Uncertainty Principle", target: "Quantum Computing" }
-  ]
-};
 
 const sendData = async (file, options, signal) => {
   let formData = new FormData();
@@ -73,6 +61,11 @@ class Page extends React.Component {
     this.state = {
       data: this.props.prev || [],
 
+      graph: {
+        nodes: [],
+        links: []
+      },
+
       progress: 0,
       selected: "",
       error: false,
@@ -114,11 +107,11 @@ class Page extends React.Component {
     this.handleData = this.handleData.bind(this);
     this.handleStop = this.handleStop.bind(this);
 
-    // audioInstance state variables
-    this.oldText = "";
-    this.newText = "";
-
   }
+
+  // async componentDidUpdate(prevProps, prevState) {
+  //   //
+  // }
 
   componentWillUnmount() {
     try {
@@ -132,7 +125,7 @@ class Page extends React.Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     try {
       let rawdata = localStorage.getItem("openai-whisper-settings");
       if (rawdata) {
@@ -151,6 +144,28 @@ class Page extends React.Component {
             : this.MAX_PAUSE,
         });
       }
+      const story = [
+        "Once upon a time in a small village nestled in the hills, there lived a young girl named Ella.",
+        "Ella was known for her adventurous spirit and her curiosity about the world beyond her village.",
+        "One sunny morning, while exploring the forest near her home, Ella stumbled upon a hidden path.",
+        "The path was overgrown with vines and looked like it hadn't been used in years.",
+        "Feeling a surge of excitement, Ella decided to follow the path to see where it led.",
+        "After walking for what seemed like hours, she came upon a clearing with a beautiful, sparkling lake.",
+        "At the edge of the lake, she noticed an old, weathered book lying in the grass.",
+        "Ella picked up the book and carefully opened it, revealing pages filled with stories and maps.",
+        "As she read through the book, she discovered that it contained the secrets of a long-lost treasure.",
+        "Determined to find the treasure, Ella set off on a new adventure, guided by the maps and clues in the book.",
+        "Her journey took her through dense forests, across raging rivers, and up steep mountains.",
+        "Along the way, she met many new friends who helped her overcome the challenges she faced.",
+        "After many days of travel, Ella finally reached the location marked on the final map.",
+        "With a sense of anticipation, she dug into the ground and unearthed a chest filled with gold and jewels.",
+        "Ella returned to her village as a hero, her adventurous spirit rewarded with the discovery of the treasure.",
+        "The village celebrated her bravery and curiosity, and Ella knew that this was just the beginning of her many adventures to come."
+      ];
+      const resp = await this.handleGraph(story)
+      console.log(resp)
+      this.graph = resp;
+
     } catch (err) {
       //
     }
@@ -508,6 +523,8 @@ class Page extends React.Component {
     }
   }
 
+  
+
   render() {
     const display_data = this.state.data.sort((a, b) => {
       if (a.id < b.id) return -1;
@@ -518,7 +535,20 @@ class Page extends React.Component {
     return (
       <div className={classes.container}>
         <div className={classes.panelMessages}>
-        <D3Graph graph={testGraph}></D3Graph>
+        <D3Graph graph={{
+          nodes: this.state.graph.nodes,
+          links: this.state.graph.links
+        }}></D3Graph>
+        <button onClick={async () => {
+          console.log("STARTING")
+          const resp = await audioInstance(story)
+          this.setState({
+            graph: resp
+          })
+          console.log(resp)
+        }} >
+          {"Simulate Message"}
+        </button>
         </div>
         <div className={classes.panelControl}>
           <div className={classes.panelLeft}>

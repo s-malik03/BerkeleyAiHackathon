@@ -11,9 +11,6 @@ export default function MyApp({ Component, pageProps }) {
 
     return (
         <div>
-            <div className=' ' >
-
-            </div>
             <Component { ...props } />
         </div>
     )
