@@ -26,13 +26,10 @@ apiRoute.use(uploadMiddleware)
 const { serverRuntimeConfig } = getConfig()
 
 apiRoute.post((req, res) => {
-
-    const options = JSON.parse(req.body.options)
-    
     const filename = req.file.path
     const outputDir = serverRuntimeConfig.PROJECT_ROOT + '/public/uploads'
     
-    let sCommand = `fish -c 'whisper ./${filename} --model ${options.model} --language ${options.language} --task ${options.task} --output_dir ${outputDir}'`
+    let sCommand = `fish -c 'whisper ./${filename} --model tiny --language English --task transcribe --output_dir ${outputDir}'`
     exec(sCommand, (err, stdout, stderr) => {
         if (err) {
             res.send({ status: 300, error: err, out: null, file: null })
