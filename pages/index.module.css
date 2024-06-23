@@ -6,6 +6,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 .title {
@@ -89,6 +90,16 @@
     position: absolute;
     right: 5px;
     top: 5px;
+}
+
+.defaultScreen {
+    position: absolute;
+    width: 100vw;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
 }
 
 .centerContainer {
