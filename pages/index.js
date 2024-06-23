@@ -12,7 +12,6 @@ import AnimatedBars from "./components/animatedBars";
 import { getFilesFromUpload } from "./lib/upload";
 import { audioInstance } from "./components/audioInstance";
 
-
 const sendData = async (file, options, signal) => {
   let formData = new FormData();
   formData.append("file", file);
@@ -35,10 +34,7 @@ const sendData = async (file, options, signal) => {
 };
 
 const formatData = (data) => {
-  return data
-    .split("\n")
-    // .filter((item) => item.length > 0)
-    // .filter((item) => item.indexOf("[") === 0);
+  return data.split("\n");
 };
 
 export async function getServerSideProps(context) {
@@ -80,8 +76,8 @@ class Page extends React.Component {
       task: "translate",
 
       playDuration: 0,
-      minDecibels: -45,
-      maxPause: 1000,
+      minDecibels: -55,
+      maxPause: 300,
     };
 
     this.mediaRec = null;
@@ -103,50 +99,34 @@ class Page extends React.Component {
     this.handleError = this.handleError.bind(this);
     this.handleData = this.handleData.bind(this);
     this.handleStop = this.handleStop.bind(this);
-
   }
 
   textCompilation(n) {
     const allTexts = [];
 
-    // Collect all text pieces into a single array
     this.state.data.forEach((item) => {
-        allTexts.push(item.texts.join(" "));
+      allTexts.push(item.texts.join(" "));
     });
 
-    console.log(allTexts)
-
-    // Get the last n text pieces
     if (allTexts.length <= n) {
-      console.log(allTexts.join(" "))
-      return allTexts.join(" ");  
+      return allTexts.join(" ");
     } else {
       return allTexts.slice(-n).join("");
     }
-}
+  }
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.data !== this.state.data) {
-      console.log("START")
-      const resp = await audioInstance(this.textCompilation(3), this.state.graph)
-      console.log("RESP: ", resp)
-      this.setState({
-        graph: resp
-      })
-      console.log("DONE")
+      const resp = await audioInstance(this.textCompilation(3), this.state.graph);
+      this.setState({ graph: resp });
     }
   }
 
   componentWillUnmount() {
-    try {
-      window.cancelAnimationFrame(this.animFrame);
+    window.cancelAnimationFrame(this.animFrame);
 
-      if (this.abortController) {
-        this.abortController.abort();
-      }
-
-    } catch (err) {
-      console.log(err);
+    if (this.abortController) {
+      this.abortController.abort();
     }
   }
 
@@ -168,10 +148,9 @@ class Page extends React.Component {
             ? parseInt(options.maxPause)
             : this.MAX_PAUSE,
         });
-
       }
     } catch (err) {
-      //
+      console.log(err);
     }
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -191,14 +170,7 @@ class Page extends React.Component {
     this.abortController = new AbortController();
   }
 
-  handleUpdateOptions({
-    duration,
-    model,
-    language,
-    task,
-    minDecibels,
-    maxPause,
-  }) {
+  handleUpdateOptions({ duration, model, language, task, minDecibels, maxPause }) {
     let options = {
       duration: this.state.duration,
       model: this.state.model,
@@ -209,44 +181,32 @@ class Page extends React.Component {
     };
 
     if (maxPause) {
-      this.setState({
-        maxPause: parseInt(maxPause),
-      });
+      this.setState({ maxPause: parseInt(maxPause) });
       options.maxPause = parseInt(maxPause);
     }
 
     if (minDecibels) {
-      this.setState({
-        minDecibels: parseInt(minDecibels),
-      });
+      this.setState({ minDecibels: parseInt(minDecibels) });
       options.minDecibels = parseInt(minDecibels);
     }
 
     if (duration) {
-      this.setState({
-        duration: duration,
-      });
+      this.setState({ duration: duration });
       options.duration = duration;
     }
 
     if (model) {
-      this.setState({
-        model: model,
-      });
+      this.setState({ model: model });
       options.model = model;
     }
 
     if (language) {
-      this.setState({
-        language: language,
-      });
+      this.setState({ language: language });
       options.language = language;
     }
 
     if (task) {
-      this.setState({
-        task: task,
-      });
+      this.setState({ task: task });
       options.task = task;
     }
 
@@ -255,17 +215,13 @@ class Page extends React.Component {
 
   handleError(error) {
     console.log(error);
-
-    this.setState({
-      error: true,
-    });
+    this.setState({ error: true });
   }
 
   handleStream(stream) {
-    this.mediaRec = new MediaRecorder(stream);
+    this.mediaRec = new MediaRecorder(stream, { mimeType: "audio/webm" });
     this.mediaRec.addEventListener("dataavailable", this.handleData);
     this.mediaRec.addEventListener("stop", this.handleStop);
-
     this.checkAudioLevel(stream);
   }
 
@@ -273,7 +229,6 @@ class Page extends React.Component {
     const audioContext = new AudioContext();
     const audioStreamSource = audioContext.createMediaStreamSource(stream);
     const analyser = audioContext.createAnalyser();
-    // by default maxDecibels is -30bB and throws INDEX_SIZE_ERR when minDecibels is the same
     analyser.maxDecibels = -10;
     analyser.minDecibels = this.state.minDecibels;
     audioStreamSource.connect(analyser);
@@ -283,7 +238,6 @@ class Page extends React.Component {
 
     const detectSound = () => {
       let soundDetected = false;
-
       analyser.getByteFrequencyData(domainData);
 
       for (let i = 0; i < bufferLength; i++) {
@@ -296,20 +250,11 @@ class Page extends React.Component {
         if (this.state.recording) {
           if (this.state.countDown) {
             clearInterval(this.countTimer);
-
-            this.setState({
-              countDown: false,
-              count: 0,
-            });
+            this.setState({ countDown: false, count: 0 });
           }
         } else {
           if (this.state.started) {
-            this.setState({
-              countDown: false,
-              recording: true,
-              count: 0,
-            });
-
+            this.setState({ countDown: false, recording: true, count: 0 });
             this.mediaRec.start();
           }
         }
@@ -319,22 +264,12 @@ class Page extends React.Component {
             if (this.state.count >= this.state.maxPause) {
               if (this.state.started) {
                 clearInterval(this.countTimer);
-
-                this.setState({
-                  countDown: false,
-                  count: 0,
-                  recording: false,
-                });
-
+                this.setState({ countDown: false, count: 0, recording: false });
                 this.mediaRec.stop();
               }
             }
           } else {
-            this.setState({
-              count: 0,
-              countDown: true,
-            });
-
+            this.setState({ count: 0, countDown: true });
             this.startCountDown();
           }
         }
@@ -349,10 +284,7 @@ class Page extends React.Component {
   startCountDown() {
     this.countTimer = setInterval(() => {
       this.setState((prev) => {
-        return {
-          ...prev,
-          count: prev.count + 100,
-        };
+        return { ...prev, count: prev.count + 100 };
       });
     }, 100);
   }
@@ -363,10 +295,7 @@ class Page extends React.Component {
 
   sendAudioData(file) {
     this.setState((prev) => {
-      return {
-        ...prev,
-        sendStatus: prev.sendStatus + 1,
-      };
+      return { ...prev, sendStatus: prev.sendStatus + 1 };
     });
 
     sendData(
@@ -397,11 +326,7 @@ class Page extends React.Component {
 
             this.setState((prev) => {
               let c = prev.sendStatus - 1;
-              return {
-                ...prev,
-                data: d,
-                sendStatus: c < 0 ? 0 : c,
-              };
+              return { ...prev, data: d, sendStatus: c < 0 ? 0 : c };
             });
 
             return;
@@ -410,10 +335,7 @@ class Page extends React.Component {
 
         this.setState((prev) => {
           let c = prev.sendStatus - 1;
-          return {
-            ...prev,
-            sendStatus: c < 0 ? 0 : c,
-          };
+          return { ...prev, sendStatus: c < 0 ? 0 : c };
         });
       })
       .catch((error) => {
@@ -425,7 +347,7 @@ class Page extends React.Component {
     const blob = new Blob(this.chunks, { type: "audio/webm;codecs=opus" });
     this.chunks = [];
     
-    var file = new File([blob], `file${Date.now()}.m4a`);
+    const file = new File([blob], `file${Date.now()}.m4a`);
     
     this.sendAudioData(file);
   }
@@ -439,10 +361,7 @@ class Page extends React.Component {
       return;
     }
 
-    this.setState({
-      playDuration: this.audioDomRef.duration,
-      selected: id,
-    });
+    this.setState({ playDuration: this.audioDomRef.duration, selected: id });
 
     try {
       await this.audioDomRef.play();
@@ -453,10 +372,7 @@ class Page extends React.Component {
     setTimeout(() => {
       this.audioDomRef.remove();
       this.audioDomRef = null;
-
-      this.setState({
-        selected: "",
-      });
+      this.setState({ selected: "" });
     }, Math.round(this.audioDomRef.duration * 1000));
   }
 
@@ -473,10 +389,7 @@ class Page extends React.Component {
         this.audioDomRef.currentTime = 1e101;
         this.audioDomRef.addEventListener("timeupdate", this.getDuration(id));
       } else {
-        this.setState({
-          playDuration: this.audioDomRef.duration,
-          selected: id,
-        });
+        this.setState({ playDuration: this.audioDomRef.duration, selected: id });
 
         try {
           await this.audioDomRef.play();
@@ -487,10 +400,7 @@ class Page extends React.Component {
         setTimeout(() => {
           this.audioDomRef.remove();
           this.audioDomRef = null;
-
-          this.setState({
-            selected: "",
-          });
+          this.setState({ selected: "" });
         }, Math.round(this.audioDomRef.duration * 1000));
       }
     });
@@ -512,22 +422,11 @@ class Page extends React.Component {
         console.log(err);
       }
 
-      this.setState({
-        recording: false,
-        countDown: false,
-        count: 0,
-        progress: 0,
-        started: false,
-      });
+      this.setState({ recording: false, countDown: false, count: 0, progress: 0, started: false });
     } else {
-      this.setState({
-        progress: 0,
-        started: true,
-      });
+      this.setState({ progress: 0, started: true });
     }
   }
-
-  
 
   render() {
     const display_data = this.state.data.sort((a, b) => {
@@ -548,35 +447,25 @@ class Page extends React.Component {
         </div>
         
         <div className={classes.panelControl}>
-          <div className={classes.panelLeft}>
-          </div>
+          <div className={classes.panelLeft}></div>
           <div className={classes.panelCenter}>
-                <div className={classes.scrollableBox}>
-                    {display_data.map((item) => {
-                        return (
-                        <Message
-                            key={item.id}
-                            duration={this.state.playDuration}
-                            id={item.id}
-                            texts={item.texts}
-                            mode={
-                            this.state.selected.length > 0 && this.state.selected === item.id
-                                ? 1
-                                : 0
-                            }
-                            onClick={this.handlePlay}
-                        />
-                        );
-                    })}
-                </div>
+            <div className={classes.scrollableBox}>
+              {display_data.map((item) => {
+                return (
+                  <Message
+                    key={item.id}
+                    duration={this.state.playDuration}
+                    id={item.id}
+                    texts={item.texts}
+                    mode={this.state.selected.length > 0 && this.state.selected === item.id ? 1 : 0}
+                    onClick={this.handlePlay}
+                  />
+                );
+              })}
+            </div>
             <div className={classes.centerContainer}>
               <div className={classes.progress}>
-                <Progress
-                  value={this.state.progress}
-                  backgroundColor="#333"
-                  displayOff={true}
-                  lineWidth={5}
-                />
+                <Progress value={this.state.progress} backgroundColor="#333" displayOff={true} lineWidth={5} />
               </div>
               <div
                 className={classes.buttonCenter}
