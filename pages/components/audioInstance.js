@@ -62,7 +62,8 @@ export const audioInstance = async (corpus, graph) => {
     between nodes that represent ideas. Each node should represent an idea or concept. Nodes should be connected if there is a relevant relationship or 
     connection between them. Make sure each node has a VALID entity, and not just a random word. 
     
-    Only if asked, always generate ideas and create nodes for them.`
+    Only if asked, generate ideas and create nodes for them. Try your best to retain nodes and links that already exist in the graph. And add nodes/links sparingly 
+    and ensure the links are relevant. Recreate old linkss`
 
     const response = await chain_one.invoke({
         system_prompt: sys_prmpt ,
