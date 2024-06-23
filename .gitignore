@@ -6,6 +6,7 @@
 .pnp.js
 .yarn/install-state.gz
 yarn.lock
+public/uploads/*
 
 # testing
 /coverage
