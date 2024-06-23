@@ -9,7 +9,7 @@ export const audioInstance = async (corpus) => {
     // chat instance
     const chat = new ChatOpenAI({
         temperature: 0.8,
-        model: "gpt-3.5-turbo",
+        model: "gpt-4-turbo",
         openAIApiKey: "sk-proj-7RBd6mycLx97qkyRjbE8T3BlbkFJ43ZHM1jXuWNvTToW4CGJ"
     });
 
@@ -32,7 +32,7 @@ export const audioInstance = async (corpus) => {
     ).pipe(chat).pipe(mapParser);
 
     const response = await chain_one.invoke({
-        system_prompt: "system_prompt",
+        system_prompt: "I need you to analyze the following text and generate a list of connections between nodes that represent ideas. Each node should represent a distinct idea or concept mentioned in the text. Nodes should be connected if there is a relevant relationship or connection between them.",
         format_instructions: mapParser.getFormatInstructions(),
         text_to_parse: corpus
     })
