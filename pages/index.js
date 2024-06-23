@@ -582,7 +582,8 @@ class Page extends React.Component {
               <div
                 className={classes.buttonCenter}
                 style={{
-                  borderColor: this.state.started ? "#FFD167" : "#555",
+                  borderColor: this.state.started ? "#FF0A0A" : "#228B22",
+                  backgroundColor: this.state.started ? "#FF0A0A" : "#228B22",
                 }}
               >
                 <IconButton onClick={this.handleStart} size={32}>
