@@ -1,5 +1,4 @@
-"use-client";
-import D3Graph from './components/D3Graph';
+import D3Graph from '../components/D3Graph';
 
 const graph = {
   "nodes": [
