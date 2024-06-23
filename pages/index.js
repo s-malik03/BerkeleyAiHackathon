@@ -438,14 +438,18 @@ class Page extends React.Component {
     return (
       <div className={classes.container}>
         <div className={classes.title}>yaph</div>
-      
+        {this.state.data.length == 0 ? (
+          <div className={classes.defaultScreen}>
+            <h2>Please hit the record button to graph ideas in real-time!</h2>
+          </div>
+        ) : 
         <div className={classes.panelMessages}>
           <D3Graph graph={{
             nodes: this.state.graph.nodes,
             links: this.state.graph.links
           }}></D3Graph>
         </div>
-        
+  }
         <div className={classes.panelControl}>
           <div className={classes.panelLeft}></div>
           <div className={classes.panelCenter}>
@@ -453,15 +457,15 @@ class Page extends React.Component {
               {display_data.map((item) => {
                 return (
                   <Message
-                    key={item.id}
-                    duration={this.state.playDuration}
-                    id={item.id}
-                    texts={item.texts}
-                    mode={this.state.selected.length > 0 && this.state.selected === item.id ? 1 : 0}
-                    onClick={this.handlePlay}
+                  key={item.id}
+                  duration={this.state.playDuration}
+                  id={item.id}
+                  texts={item.texts}
+                  mode={this.state.selected.length > 0 && this.state.selected === item.id ? 1 : 0}
+                  onClick={this.handlePlay}
                   />
-                );
-              })}
+                  );
+                })}
             </div>
             <div className={classes.centerContainer}>
               <div className={classes.progress}>
@@ -473,15 +477,15 @@ class Page extends React.Component {
                   borderColor: this.state.started ? "#FF0A0A" : "#4AD2EE",
                   backgroundColor: this.state.started ? "#FF0A0A" : "#4AD2EE",
                 }}
-              >
+                >
                 <IconButton onClick={this.handleStart} size={32}>
                   {this.state.error ? (
                     <MicrophoneOff color="#555" />
-                  ) : (
-                    <Microphone
+                    ) : (
+                      <Microphone
                       color={this.state.started ? "#FFFFFF" : "#555"}
-                    />
-                  )}
+                      />
+                      )}
                 </IconButton>
               </div>
               {this.state.started && (
