@@ -4,7 +4,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 
-export const audioInstance = async (newText) => {
+export const audioInstance = async (oldText, newText) => {
     // this.totalText = '';
     // this.curMap = [];
 
@@ -38,5 +38,6 @@ export const audioInstance = async (newText) => {
         format_instructions: mapParser.getFormatInstructions(),
         text_to_parse: newText
     })
-    return response
+
+    return response, oldText + "\n" + newText;
 }
