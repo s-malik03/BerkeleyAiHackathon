@@ -58,3 +58,5 @@ function getFilesFromUpload() {
     
     return prevData.filter(item => item.texts.length > 0)
 }
+
+export default getFilesFromUpload;
